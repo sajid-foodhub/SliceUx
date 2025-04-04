@@ -1,131 +1,105 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
+import { Text, View, useColorScheme, Button } from 'react-native';
 import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+  Theme,
+} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  colors,
+  DarkColorTokens,
+  LightColorTokens,
+  Button as SliceButton,
+  SliceThemeProvider, theme, Icon, Typography,
+} from 'react-native-fh-slice-ui';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+type RootStackParamList = {
+  Home: undefined;
+  Details: undefined;
+};
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const LightTheme: Theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    ...LightColorTokens(colors),
+    background: '#f5f5f5',
+    card: '#ffffff',
+    text: '#000000',
+    primary: '#1e90ff',
+    border: '#ccc',
+    notification: '#ff453a',
+  },
+};
+
+const MyDarkTheme: Theme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    ...DarkColorTokens(colors),
+    background: '#121212',
+    card: '#1f1f1f',
+    text: '#ffffff',
+    primary: '#bb86fc',
+    border: '#333333',
+    notification: '#ff453a',
+  },
+};
+
+export default function App() {
+  const colorScheme = useColorScheme(); // 'light' | 'dark' | null
+
+  const colorTheme = colorScheme === 'dark' ? MyDarkTheme : LightTheme;
+
+  const HomeScreen = ({ navigation }: any) => (
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: colorTheme.colors.background,
+      }}
+    >
+      <Text style={{ fontSize: 24, color: colorTheme.colors.text, marginBottom: 10 }}>
+        Home Screen
       </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+      <Button title="Go to Details" onPress={() => navigation.navigate('Details')} />
     </View>
   );
-}
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the reccomendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
-
-  return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+  const DetailsScreen = ({ navigation }: any) => (
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: colorTheme.colors.background,
+      }}
+    >
+      <View style={{ padding: 16, gap: 12 }}>
+        <Typography>sajid</Typography>
+        <SliceButton variant="primary" size="small">sajid</SliceButton>
+        <SliceButton variant="primary" size="medium">sajid</SliceButton>
+        <SliceButton variant="primary" size="large">sajid</SliceButton>
+      </View>
+      <Button title="Go Back" onPress={() => navigation.goBack()} />
     </View>
   );
+
+  return (
+    <SliceThemeProvider theme={theme}>
+    <NavigationContainer theme={colorTheme}>
+      <Stack.Navigator initialRouteName="Home">
+
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+
+      </Stack.Navigator>
+    </NavigationContainer>
+    </SliceThemeProvider>
+  );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
