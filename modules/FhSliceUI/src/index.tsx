@@ -55,3 +55,5 @@ export { colors } from './SliceUI/colors/Pallete';
 export { DarkColorTokens, LightColorTokens } from './SliceUI/colors/Token';
 
 export { theme } from './SliceUI/theme/theme';
+
+export {HStack, VStack} from './SliceUI/layout/Stack'
