@@ -87,7 +87,6 @@ export default function App() {
 
   const colorTheme = colorScheme === 'dark' ? MyDarkTheme : LightTheme;
 
-  alert(JSON.stringify(theme));
 
   const HomeScreen = ({ navigation }: any) => (
     <View

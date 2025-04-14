@@ -1,7 +1,8 @@
 {
-  "name": "react-native-fh-slice-ui",
+  "name": "react-native-fh-slice-ui-josh-josh",
   "version": "0.0.0",
   "description": "ashkd",
+  "private": false,
   "main": "src/index",
   "author": " <> ()",
   "license": "UNLICENSED",
